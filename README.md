@@ -205,4 +205,4 @@ textutil -convert docx -output input.docx input.doc
 
 ## 许可证
 
-暂未指定许可证。如需公开复用，建议后续补充 `LICENSE` 文件。
+本项目使用 MIT License，详见 [LICENSE](LICENSE)。
