@@ -1,48 +1,59 @@
 # doc-format-gbt9704
 
-`doc-format-gbt9704` is a Codex skill for formatting Chinese official documents according to GB/T 9704-2012《党政机关公文格式》. It helps Codex turn Word documents, legacy `.doc` files, plain text drafts, summaries, notices, reports, letters, commands, and meeting minutes into standardized official-document layouts.
+`doc-format-gbt9704` 是一个用于 **GB/T 9704-2012《党政机关公文格式》** 的 Codex Skill。它可以帮助 Codex 将 Word 文档、旧版 `.doc` 文件、纯文本草稿、工作总结、通知、报告、函、命令、纪要等材料，整理为符合党政机关公文格式要求的规范版式。
 
-## What It Does
+这个 Skill 的目标不是简单“美化文档”，而是把公文排版中的纸张、版心、字体、字号、层级、页码、署名、日期、附件、版记等规则转化为 Codex 可以理解和执行的工作流。
 
-This skill guides Codex to apply the core GB/T 9704-2012 formatting requirements, including:
+## 主要用途
 
-- A4 page setup and official document text block geometry.
-- Standard margins: top 37 mm, left 28 mm, right 26 mm, bottom 35 mm.
-- Default 3号仿宋 body text.
-- 2号小标宋-style centered document titles.
-- Official heading hierarchy: `一、`, `（一）`, `1.`, `（1）`.
-- Font treatment for hierarchy: first level 黑体, second level 楷体, lower levels 仿宋.
-- Official page numbers outside the text block, alternating by odd/even pages.
-- Signature and date placement for common no-seal documents.
-- Rules for attachments, imprint blocks, letter format, command format, and minutes format.
-- Render-and-review workflow for Word documents so layout issues are caught before delivery.
+使用这个 Skill，可以让 Codex 执行以下任务：
 
-## When To Use
+- 按 GB/T 9704-2012 要求排版中文公文。
+- 将 `.doc`、`.docx`、`.rtf`、`.txt` 或粘贴文本整理为公文版式。
+- 对已有 Word 文档进行公文格式规范化。
+- 检查文档是否符合党政机关公文格式要求。
+- 生成或修订通知、报告、总结、函、命令、纪要等常见公文。
+- 应用 A4 页面、版心、3 号仿宋正文、2 号小标宋标题、层级序号、页码、署名日期、附件说明、版记等排版规则。
 
-Use this skill when you ask Codex to:
+## 适用场景
 
-- 按《党政机关公文格式》排版 Word 文档。
-- Convert a `.doc` or `.docx` into GB/T 9704-2012 format.
-- Normalize a Chinese official document draft.
-- Check whether a document follows GB/T 9704 formatting.
-- Create or revise a 公文、通知、报告、总结、函、命令、纪要.
-- Apply official page margins, fonts, line spacing, page numbers, signature/date layout, attachments, or imprint rules.
-
-Example prompts:
+当你希望 Codex 完成类似下面的任务时，可以使用本 Skill：
 
 ```text
-Use $doc-format-gbt9704 to format this Word document according to GB/T 9704-2012.
+$doc-format-gbt9704 请把这份 Word 文档按 GB/T 9704-2012 公文格式排版。
 ```
 
 ```text
-用 $doc-format-gbt9704 把这个 .doc 按党政机关公文格式重新排版。
+用 $doc-format-gbt9704 把这个 .doc 文件按党政机关公文格式重新排版。
 ```
 
 ```text
-Use $doc-format-gbt9704 to audit this document and tell me which GB/T 9704 layout rules it violates.
+使用 $doc-format-gbt9704 检查这份公文有哪些格式不符合 GB/T 9704。
 ```
 
-## Repository Structure
+```text
+$doc-format-gbt9704 把这篇工作总结整理成规范公文版式，并输出 docx。
+```
+
+## 功能概览
+
+本 Skill 覆盖的核心排版规则包括：
+
+- A4 纸张：`210 mm × 297 mm`。
+- 页面边距：上 `37 mm`，左 `28 mm`，右 `26 mm`，下 `35 mm`。
+- 版心尺寸：`156 mm × 225 mm`。
+- 默认正文：`3 号仿宋体`。
+- 标题：一般使用 `2 号小标宋体`，居中排布。
+- 正文段落：首行左空二字，回行顶格。
+- 层级序号：`一、`、`（一）`、`1.`、`（1）`。
+- 层级字体：第一层黑体，第二层楷体，第三、四层仿宋体。
+- 页码：位于版心外，奇数页居右，偶数页居左。
+- 成文日期：阿拉伯数字标全年、月、日，月日不补零。
+- 发文机关署名和日期：支持常见不加盖印章文档的右侧排布。
+- 附件、版记、信函格式、命令格式、纪要格式等规则参考。
+- Word 文档渲染检查流程，避免交付存在缺字、重叠、页码错位等问题的文档。
+
+## 仓库结构
 
 ```text
 doc-format-gbt9704/
@@ -56,120 +67,142 @@ doc-format-gbt9704/
     └── format_docx_gbt9704.py
 ```
 
+## 文件说明
+
 ### `SKILL.md`
 
-The Codex skill entrypoint. It describes when the skill should trigger and the workflow Codex should follow.
+Codex Skill 的入口文件，包含 Skill 名称、触发描述、工作流、核心排版原则和资源说明。Codex 识别到相关任务时，会优先读取这个文件。
+
+### `agents/openai.yaml`
+
+Skill 在 Codex 界面中的展示元数据，包括显示名称、简短说明和默认提示词。
 
 ### `references/format_rules.md`
 
-A compact, automation-friendly reference for GB/T 9704-2012 rules. It covers page geometry, typography, headers, body layout, signatures, seals, attachments, imprint blocks, page numbers, landscape tables, and special formats.
+面向 AI 和自动排版程序整理的 GB/T 9704-2012 规则参考。内容包括：
+
+- 页面和版心参数。
+- 字体、字号、行数、字数。
+- 版头、主体、版记区域划分。
+- 份号、密级、紧急程度、发文机关标志、发文字号、签发人。
+- 标题、主送机关、正文、附件说明。
+- 发文机关署名、成文日期、印章。
+- 附注、附件、版记、页码。
+- 横排表格、信函格式、命令格式、纪要格式。
+- 自动排版校验清单。
 
 ### `scripts/format_docx_gbt9704.py`
 
-A reusable helper script for common no-seal DOCX formatting tasks. It is intended for straightforward reports and summaries where the source text has:
+一个可复用的 DOCX 排版脚本，适用于常见的 **无印章、无复杂版记、无附件正文** 的公文类文档，例如工作总结、普通报告、说明材料等。
 
-- a document title,
-- body paragraphs,
-- optional section headings,
-- optional final issuing authority,
-- optional final date.
+脚本会自动处理：
 
-For complex official documents with red headers, seals, attachments, imprint blocks, letter format, command format, or minutes-specific requirements, Codex should read `references/format_rules.md` and patch or extend the implementation.
+- A4 页面与标准页边距。
+- 3 号仿宋正文。
+- 2 号小标宋风格标题。
+- 一级、二级、三级标题字体。
+- 正文首行缩进。
+- 奇偶页页码。
+- 末尾发文机关署名和日期。
 
-## Installation
+如果文档包含红色版头、印章、附件、版记、信函格式、命令格式、纪要专用格式等复杂要素，应让 Codex 读取 `references/format_rules.md`，在脚本基础上扩展或手动进行 OOXML 排版。
 
-Clone or copy this folder into your Codex skills directory:
+## 安装方法
+
+将本仓库克隆到 Codex 的 skills 目录：
 
 ```bash
 mkdir -p ~/.codex/skills
 git clone https://github.com/huanda1988/doc-format-gbt9704.git ~/.codex/skills/doc-format-gbt9704
 ```
 
-Restart Codex or start a new conversation so the skill list is refreshed.
+安装后，重启 Codex 或开启一个新会话，让 Skill 列表刷新。
 
-## Basic Usage In Codex
+## 在 Codex 中使用
 
-After installation, mention the skill in your prompt:
+在提示词中显式提到 Skill 名称：
 
 ```text
-$doc-format-gbt9704 请把这份 Word 文档按 GB/T 9704-2012 公文格式排版。
+$doc-format-gbt9704 请把这份 Word 文档按党政机关公文格式排版。
 ```
 
-For Word files, this skill is designed to work with the Documents skill. Codex should:
+如果任务涉及 Word 文件，建议同时使用 Documents 能力。理想流程是：
 
-1. Convert legacy `.doc` files to `.docx` when necessary.
-2. Preserve original content unless rewriting is explicitly requested.
-3. Apply GB/T 9704 layout rules.
-4. Render the DOCX to page images.
-5. Inspect every page for clipping, overlap, missing glyphs, broken page numbers, and bad signature placement.
-6. Deliver the final `.docx`.
+1. 读取源文档。
+2. 如源文件是旧版 `.doc`，先转换为 `.docx`。
+3. 保留原文内容，除非用户明确要求改写。
+4. 按 GB/T 9704 规则设置页面、字体、段落、页码、署名和日期。
+5. 渲染 DOCX 为页面图片。
+6. 逐页检查是否有文字重叠、缺字、页码错位、表格破损、署名日期位置异常。
+7. 修复问题后交付最终 `.docx`。
 
-## Script Usage
+## 脚本使用方法
 
-The script can be run directly for simple no-seal documents:
+对于简单的无印章公文，可以直接运行脚本：
 
 ```bash
 python scripts/format_docx_gbt9704.py input.docx --out output.docx
 ```
 
-Keep source metadata if needed:
+如果需要保留源文档元数据：
 
 ```bash
 python scripts/format_docx_gbt9704.py input.docx --out output.docx --keep-metadata
 ```
 
-The input must be `.docx`. Convert `.doc` first, for example with LibreOffice:
+脚本输入必须是 `.docx`。如果源文件是 `.doc`，请先转换。
+
+使用 LibreOffice 转换：
 
 ```bash
 soffice --headless --convert-to docx --outdir /path/to/out input.doc
 ```
 
-Or on macOS:
+macOS 可使用 `textutil` 转换：
 
 ```bash
 textutil -convert docx -output input.docx input.doc
 ```
 
-## Formatting Defaults
+## 脚本默认排版参数
 
-The helper script applies these defaults:
-
-| Item | Default |
+| 项目 | 默认值 |
 |---|---|
-| Paper | A4, 210 mm × 297 mm |
-| Margins | Top 37 mm, left 28 mm, right 26 mm, bottom 35 mm |
-| Body font | 3号仿宋-style, 16 pt |
-| Title font | 2号小标宋-style, 22 pt |
-| Line pitch | Exact 29 pt |
-| Body indent | First line indented by 2 Chinese characters |
-| First-level heading | 黑体 |
-| Second-level heading | 楷体 |
-| Lower-level heading/body | 仿宋 |
-| Page number | 4号宋体-style `— PAGE —`; odd pages right, even pages left |
+| 纸张 | A4，210 mm × 297 mm |
+| 页边距 | 上 37 mm，左 28 mm，右 26 mm，下 35 mm |
+| 正文 | 3 号仿宋风格，16 pt |
+| 标题 | 2 号小标宋风格，22 pt |
+| 行距 | 固定值 29 pt |
+| 正文缩进 | 首行缩进 2 个汉字宽度 |
+| 一级标题 | 黑体 |
+| 二级标题 | 楷体 |
+| 三级及正文 | 仿宋 |
+| 页码 | 4 号宋体风格 `— PAGE —`，奇数页居右，偶数页居左 |
 
-## Important Notes
+## 注意事项
 
-- The script is a practical formatter, not a complete legal/typographic engine for every possible GB/T 9704 case.
-- Always inspect rendered pages before final delivery.
-- Do not rely only on text extraction or XML inspection for layout quality.
-- If a document contains seals, red issuing authority marks, imprint blocks, attachments, or special formats, use the reference rules and adjust the document manually or extend the script.
-- The bundled rules are designed for AI-assisted formatting and should be checked against the official standard when strict compliance is required.
+- 该脚本适合常见公文材料的自动排版，不是覆盖所有 GB/T 9704 场景的完整排版引擎。
+- 严格交付前必须渲染并逐页检查 DOCX。
+- 不要只依赖文本抽取或 XML 检查判断版式是否正确。
+- 若文档含有印章、红色版头、发文字号、版记、附件正文或特殊格式，应结合 `references/format_rules.md` 进行扩展处理。
+- GB/T 9704 的部分规则依赖实际机关模板、字体可用性和 Word/LibreOffice 渲染差异，必要时应进行人工复核。
 
-## Validation Checklist
+## 交付前校验清单
 
-Before publishing or delivering a formatted document, confirm:
+排版完成后，至少检查以下项目：
 
-- The page is A4.
-- Margins match the standard layout.
-- The first page contains正文.
-- The title is centered and visually appropriate.
-- Paragraphs use two-character first-line indentation.
-- Heading levels follow `一、`, `（一）`, `1.`, `（1）`.
-- Dates do not use leading zeroes in month/day.
-- Page numbers sit outside the text block and alternate left/right.
-- Signature and date are visible and correctly aligned.
-- Rendered pages have no overlap, clipping, missing glyph boxes, or broken spacing.
+- 页面是否为 A4。
+- 页边距和版心是否符合要求。
+- 首页是否显示正文。
+- 标题是否居中，字号是否合适。
+- 正文是否为 3 号仿宋风格。
+- 段落是否首行缩进二字。
+- 层级序号是否符合 `一、`、`（一）`、`1.`、`（1）`。
+- 成文日期是否使用阿拉伯数字，且月日不补零。
+- 页码是否位于版心外，奇偶页位置是否正确。
+- 发文机关署名和日期是否可见且对齐合理。
+- 渲染页面是否存在重叠、缺字、方框、错位、异常空白或分页问题。
 
-## License
+## 许可证
 
-No license has been specified yet. Add a license file before public reuse if needed.
+暂未指定许可证。如需公开复用，建议后续补充 `LICENSE` 文件。
